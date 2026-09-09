@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>☠️ Армия вирусов (17)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0a0a0a;
+            color: #0f0;
+            font-family: 'Courier New', monospace;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.4s;
+        }
+        .container {
+            background: #111;
+            padding: 24px 20px;
+            border-radius: 20px;
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+            border: 1px solid #2a2a2a;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            transition: border-color 0.3s;
+        }
+        .icon { font-size: 48px; margin-bottom: 6px; }
+        .title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 4px;
+            transition: color 0.3s;
+        }
+        .sub {
+            color: #888;
+            font-size: 13px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #2a2a2a;
+            padding-bottom: 10px;
+        }
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #1a1a1a;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+            border: 1px solid #2a2a2a;
+        }
+        .progress-fill {
+            width: 0%;
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.25s;
+        }
+        .percent {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+        .log {
+            background: #0a0a0a;
+            border-radius: 12px;
+            padding: 10px;
+            max-height: 130px;
+            overflow-y: auto;
+            font-size: 12px;
+            text-align: left;
+            border: 1px solid #1a2a1a;
+            line-height: 1.5;
+            margin-top: 10px;
+        }
+        .log .danger { color: #ff6b6b; }
+        .log .warn { color: #ffd93d; }
+        .log .ok { color: #66bb6a; }
+        .log .info { color: #4fc3f7; }
+        .btn {
+            background: #ff4444;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+            margin-top: 12px;
+            font-family: 'Courier New', monospace;
+        }
+        .btn:active { transform: scale(0.96); }
+        .red-bg { background: #1a0000 !important; border-color: #ff4444 !important; }
+        .orange-bg { background: #1a0a00 !important; border-color: #ff8800 !important; }
+        .purple-bg { background: #0a001a !important; border-color: #aa44ff !important; }
+        .green-bg { background: #001a00 !important; border-color: #44ff44 !important; }
+        .blue-bg { background: #000a1a !important; border-color: #4488ff !important; }
+        .pink-bg { background: #1a001a !important; border-color: #ff44aa !important; }
+        .cyan-bg { background: #001a1a !important; border-color: #44ffcc !important; }
+        .final-box {
+            display: none;
+            margin-top: 12px;
+            padding: 14px;
+            border: 2px solid #ff4444;
+            border-radius: 12px;
+            background: #1a0a0a;
+        }
+        .final-box .big {
+            font-size: 26px;
+            color: #ff4444;
+            font-weight: bold;
+            animation: blink 0.8s infinite;
+        }
+        .final-box .small {
+            color: #aaa;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+        .hidden { display: none; }
+        .virus-counter {
+            color: #666;
+            font-size: 12px;
+            margin-top: 6px;
+        }
+    </style>
+</head>
+<body>
+<div class="container" id="container">
+    <div class="icon" id="icon">🧬</div>
+    <div class="title" id="title">АРМИЯ ВИРУСОВ</div>
+    <div class="sub" id="sub">17 вирусов активируются последовательно...</div>
+
+    <div class="progress-bar">
+        <div class="progress-fill" id="progressFill" style="background:#ff4444;"></div>
+    </div>
+    <div class="percent" id="percentDisplay" style="color:#ff4444;">0%</div>
+
+    <div class="log" id="log">
+        <div class="info">> Запуск армии вирусов...</div>
+    </div>
+
+    <button class="btn" id="skipBtn">⏭ ПРОПУСТИТЬ</button>
+    <div class="virus-counter" id="counter">1 / 17</div>
+
+    <div class="final-box" id="finalBox">
+        <div class="big">☠️ ВСЕ 17 ВИРУСОВ АКТИВИРОВАНЫ</div>
+        <div class="small">Система полностью разрушена. Восстановление невозможно.</div>
+    </div>
+</div>
+
+<script>
+    // ===== 17 ВИРУСОВ =====
+    const viruses = [
+        { icon: '💀', title: 'ШИФРОВАЛЬЩИК', sub: 'Файлы зашифрованы. Требуется выкуп.', color: '#ff4444', bg: 'red-bg', logs: ['Шифрование файлов...', 'Ключ сохранён на сервере.', 'Доступ заблокирован.'] },
+        { icon: '🕷️', title: 'ТРОЯН-ШПИОН', sub: 'Данные передаются на сервер.', color: '#ff8800', bg: 'orange-bg', logs: ['Подключение к серверу...', 'Копирование контактов...', 'Данные отправлены.'] },
+        { icon: '⌨️', title: 'КЕЙЛОГГЕР', sub: 'Все нажатия записываются.', color: '#aa44ff', bg: 'purple-bg', logs: ['Перехват клавиш...', 'Запись паролей...', 'Логи переданы.'] },
+        { icon: '⚙️', title: 'РУТКИТ', sub: 'Системные файлы изменены.', color: '#44ff44', bg: 'green-bg', logs: ['Внедрение в ядро...', 'Системные файлы модифицированы.', 'Обнаружение заблокировано.'] },
+        { icon: '🧨', title: 'ФЕЙК-АНТИВИРУС', sub: 'Обнаружено 999 угроз.', color: '#ff4444', bg: 'red-bg', logs: ['Сканирование...', 'Найдено 999 угроз.', 'Требуется оплата.'] },
+        { icon: '📡', title: 'ШПИОНСКИЙ МОДУЛЬ', sub: 'Камера и микрофон активированы.', color: '#4488ff', bg: 'blue-bg', logs: ['Доступ к камере получен.', 'Микрофон включён.', 'Данные передаются.'] },
+        { icon: '🧠', title: 'НЕЙРО-ВИРУС', sub: 'Имитация активности мозга.', color: '#ff44aa', bg: 'pink-bg', logs: ['Анализ поведения...', 'Создание цифровой копии...', 'Копия отправлена.'] },
+        { icon: '🌐', title: 'СЕТЕВОЙ ЧЕРВЬ', sub: 'Распространяется по Wi-Fi.', color: '#44ffcc', bg: 'cyan-bg', logs: ['Поиск устройств в сети...', 'Подключение к соседям...', 'Червь активирован.'] },
+        { icon: '💣', title: 'ЛОГИЧЕСКАЯ БОМБА', sub: 'Активация через 10 минут.', color: '#ff6600', bg: 'orange-bg', logs: ['Таймер установлен.', '10:00... 9:59...', 'Бомба готова.'] },
+        { icon: '🔑', title: 'ПОХИТИТЕЛЬ ПАРОЛЕЙ', sub: 'Все пароли скопированы.', color: '#ffdd44', bg: 'orange-bg', logs: ['Сбор паролей из браузера...', 'Сохранение в облаке...', 'Пароли украдены.'] },
+        { icon: '📁', title: 'УНИЧТОЖИТЕЛЬ ФАЙЛОВ', sub: 'Файлы удаляются безвозвратно.', color: '#ff3333', bg: 'red-bg', logs: ['Удаление документов...', 'Удаление фото...', 'Восстановление невозможно.'] },
+        { icon: '🧬', title: 'МУТАЦИЯ', sub: 'Вирус эволюционирует.', color: '#aa66ff', bg: 'purple-bg', logs: ['Мутация кода...', 'Новый штамм создан.', 'Защита сломана.'] },
+        { icon: '☁️', title: 'ОБЛАЧНЫЙ ТРОЯН', sub: 'Данные синхронизируются.', color: '#44aaff', bg: 'blue-bg', logs: ['Подключение к облаку...', 'Синхронизация файлов...', 'Данные украдены.'] },
+        { icon: '🧿', title: 'ПСИХО-ВИРУС', sub: 'Манипуляция эмоциями.', color: '#ff66aa', bg: 'pink-bg', logs: ['Анализ эмоций...', 'Отправка провокаций...', 'Стресс увеличен.'] },
+        { icon: '🔊', title: 'ЗВУКОВОЙ ВИРУС', sub: 'Громкий звук на полной громкости.', color: '#ffaa00', bg: 'orange-bg', logs: ['Активация динамиков...', 'Максимальная громкость...', 'Звук воспроизводится.'] },
+        { icon: '🧪', title: 'ЛАБОРАТОРНЫЙ ШТАММ', sub: 'Экспериментальный вирус.', color: '#66ff88', bg: 'green-bg', logs: ['Запуск эксперимента...', 'Нестабильный код...', 'Побочные эффекты.'] },
+        { icon: '☠️', title: 'ЯДЕРНЫЙ ВИРУС', sub: 'Полное уничтожение системы.', color: '#ff0000', bg: 'red-bg', logs: ['Активация ядерного режима...', 'Форматирование всех разделов...', 'Система уничтожена.'] }
+    ];
+
+    let currentIndex = 0;
+    let progress = 0;
+    let isSkipped = false;
+    const container = document.getElementById('container');
+    const icon = document.getElementById('icon');
+    const title = document.getElementById('title');
+    const sub = document.getElementById('sub');
+    const progressFill = document.getElementById('progressFill');
+    const percentDisplay = document.getElementById('percentDisplay');
+    const logEl = document.getElementById('log');
+    const finalBox = document.getElementById('finalBox');
+    const counter = document.getElementById('counter');
+    const skipBtn = document.getElementById('skipBtn');
+
+    function addLog(msg, type = 'info') {
+        const div = document.createElement('div');
+        div.className = type;
+        div.textContent = '> ' + msg;
+        logEl.appendChild(div);
+        logEl.scrollTop = logEl.scrollHeight;
+    }
+
+    function updateProgress(value) {
+        progress = Math.min(value, 100);
+        progressFill.style.width = progress + '%';
+        percentDisplay.textContent = Math.floor(progress) + '%';
+    }
+
+    function setVirus(index) {
+        const v = viruses[index];
+        icon.textContent = v.icon;
+        title.textContent = v.title;
+        sub.textContent = v.sub;
+        title.style.color = v.color;
+        progressFill.style.background = v.color;
+        percentDisplay.style.color = v.color;
+        document.body.className = v.bg;
+        container.className = 'container ' + v.bg;
+        logEl.innerHTML = '';
+        v.logs.forEach(l => addLog(l, 'danger'));
+        counter.textContent = `${index + 1} / ${viruses.length}`;
+        updateProgress((index / viruses.length) * 100);
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function runAll() {
+        for (let i = 0; i < viruses.length; i++) {
+            if (isSkipped) break;
+            currentIndex = i;
+            setVirus(i);
+            const startPct = (i / viruses.length) * 100;
+            const endPct = ((i + 1) / viruses.length) * 100;
+            for (let p = startPct; p <= endPct; p += 0.8) {
+                if (isSkipped) break;
+                updateProgress(p);
+                await sleep(30 + Math.random() * 30);
+            }
+            await sleep(500);
+        }
+
+        if (!isSkipped) {
+            finalBox.style.display = 'block';
+            document.body.className = 'red-bg';
+            container.className = 'container red-bg';
+            icon.textContent = '☠️';
+            title.textContent = 'ВСЕ 17 АКТИВИРОВАНЫ';
+            sub.textContent = 'Телефон полностью разрушен.';
+            progressFill.style.width = '100%';
+            percentDisplay.textContent = '100%';
+            counter.textContent = '17 / 17';
+            skipBtn.textContent = '🔄 ПЕРЕЗАПУСТИТЬ';
+            skipBtn.onclick = () => location.reload();
+        }
+    }
+
+    skipBtn.addEventListener('click', function() {
+        if (isSkipped) return;
+        isSkipped = true;
+        finalBox.style.display = 'block';
+        document.body.className = 'red-bg';
+        container.className = 'container red-bg';
+        icon.textContent = '⏭️';
+        title.textContent = 'ПРОПУЩЕНО';
+        sub.textContent = 'Вы прервали цепочку, но вирусы уже внутри.';
+        progressFill.style.width = '100%';
+        percentDisplay.textContent = '100%';
+        logEl.innerHTML = '<div class="warn">> Комбо прервано пользователем.</div>';
+        counter.textContent = '—';
+        skipBtn.textContent = '🔄 ПЕРЕЗАПУСТИТЬ';
+        skipBtn.onclick = () => location.reload();
+    });
+
+    setTimeout(() => runAll(), 500);
+</script>
+</body>
+</html>
